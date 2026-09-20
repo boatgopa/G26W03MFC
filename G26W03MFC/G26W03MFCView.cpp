@@ -28,6 +28,7 @@ BEGIN_MESSAGE_MAP(CG26W03MFCView, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
 	ON_WM_LBUTTONDOWN()
+	ON_WM_RBUTTONDOWN()
 END_MESSAGE_MAP()
 
 // CG26W03MFCView 생성/소멸
@@ -60,9 +61,12 @@ void CG26W03MFCView::OnDraw(CDC* pDC)
 		return;
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
-	CPoint p = pDoc->GetPoint();
-
-	pDC->Ellipse(p.x - 30, p.y - 30, p.x + 30, p.y + 30);
+	int count = pDoc->GetPointCount();
+	for (int i = 0; i < count; i++)
+	{
+		CPoint p = pDoc->GetPoint(i);
+		pDC->Ellipse(p.x - 30, p.y - 30, p.x + 30, p.y + 30);
+	}
 }
 
 
@@ -111,8 +115,17 @@ void CG26W03MFCView::OnLButtonDown(UINT nFlags, CPoint point)
 	//CClientDC dc(this);
 	//dc.Ellipse(point.x - 30, point.y - 30, point.x + 30, point.y + 30);
 
-	GetDocument()->SetPoint(point);
-	Invalidate();
+	GetDocument()->AddPoint(point); // 새 좌표 추가
+	Invalidate();                   // 화면 갱신
 
 	CView::OnLButtonDown(nFlags, point);
+}
+void CG26W03MFCView::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	if (GetDocument()->UndoPoint())
+	{
+		Invalidate();
+	}
+
+	CView::OnRButtonDown(nFlags, point);
 }

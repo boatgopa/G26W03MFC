@@ -44,6 +44,7 @@ public:
 //	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 //	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // G26W03MFCView.cpp의 디버그 버전

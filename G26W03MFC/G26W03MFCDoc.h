@@ -4,16 +4,34 @@
 
 
 #pragma once
+#include <afxtempl.h>
 
 
 class CG26W03MFCDoc : public CDocument
 {
 
 protected:
-	CPoint Point = CPoint(-100, -100);
+	CArray<CPoint, CPoint> m_arrayPoint;
 public:
-	CPoint GetPoint() { return Point; }
-	void SetPoint(CPoint p) { Point = p; }
+	int GetPointCount() const { return (int)m_arrayPoint.GetSize(); }
+	CPoint GetPoint(int index) const { return m_arrayPoint.GetAt(index); }
+
+	void AddPoint(CPoint p)
+	{
+		m_arrayPoint.Add(p);
+		SetModifiedFlag();
+	}
+
+	BOOL UndoPoint()
+	{
+		if (m_arrayPoint.GetSize() > 0)
+		{
+			m_arrayPoint.RemoveAt(m_arrayPoint.GetUpperBound());
+			SetModifiedFlag();
+			return TRUE;
+		}
+		return FALSE;
+	}
 
 protected: // serialization에서만 만들어집니다.
 	CG26W03MFCDoc() noexcept;
