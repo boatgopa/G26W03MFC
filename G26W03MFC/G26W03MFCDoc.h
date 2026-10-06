@@ -24,7 +24,7 @@ public:
 
 	BOOL UndoPoint()
 	{
-		if (m_arrayPoint.GetSize() > 0)
+		if (m_arrayPoint.GetSize() > 0)																										
 		{
 			m_arrayPoint.RemoveAt(m_arrayPoint.GetUpperBound());
 			SetModifiedFlag();
